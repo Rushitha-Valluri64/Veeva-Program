@@ -1,0 +1,154 @@
+import java.util.*;
+public class Main 
+{
+    private static HashMap<String, HashMap<String, Integer>> storeData = new HashMap<>();
+    public static void main(String[] args) 
+    {
+        Scanner sc = new Scanner(System.in);
+        int mainChoice;
+        do 
+        {
+            System.out.println("\n===== MAIN MENU =====");
+            System.out.println("1. Enter Data");
+            System.out.println("2. Display Queries");
+            System.out.println("3. Exit");
+            System.out.print("Enter your choice: ");
+            mainChoice = sc.nextInt();
+            sc.nextLine();
+            switch (mainChoice) 
+            {
+                case 1:
+                    enterData(sc);
+                    break;
+                case 2:
+                    queryMenu(sc);
+                    break;
+                case 3:
+                    System.out.println("Program terminated.");
+                    break;
+                default:
+                    System.out.println("Invalid choice! Try again.");
+            }
+        } 
+        while (mainChoice != 3);
+        sc.close();
+    }
+    private static void enterData(Scanner sc) 
+    {
+        System.out.print("Enter Store ID: ");
+        String storeId = sc.nextLine();
+        HashMap<String, Integer> productMap;
+        if (storeData.containsKey(storeId)) 
+        {
+            productMap = storeData.get(storeId);
+        } 
+        else 
+        {
+            productMap = new HashMap<>();
+        }
+        System.out.print("Enter number of products: ");
+        int n = sc.nextInt();
+        sc.nextLine();
+        for (int i = 0; i < n; i++) 
+        {
+            System.out.print("Enter product name: ");
+            String productName = sc.nextLine();
+            System.out.print("Enter price: ");
+            int price = sc.nextInt();
+            sc.nextLine();
+            productMap.put(productName, price);
+        }
+        storeData.put(storeId, productMap);
+        System.out.println("Data stored successfully!");
+    }
+    private static void queryMenu(Scanner sc) 
+    {
+        int choice;
+        do 
+        {
+            System.out.println("\n----- QUERY MENU -----");
+            System.out.println("1. Display products of a store");
+            System.out.println("2. Product with highest price in a store");
+            System.out.println("3. Stores containing the product");
+            System.out.println("4. Exit to Main Menu");
+            System.out.print("Enter your choice: ");
+            choice = sc.nextInt();
+            sc.nextLine();
+            switch (choice) 
+            {
+                case 1:
+                    displayProducts(sc);
+                    break;
+                case 2:
+                    highestPricedProduct(sc);
+                    break;
+                case 3:
+                    findStoresByProduct(sc);
+                    break;
+                case 4:
+                    System.out.println("Returning to Main Menu...");
+                    break;
+                default:
+                    System.out.println("Invalid choice! Try again.");
+            }
+        } while (choice != 4);
+    }
+    private static void displayProducts(Scanner sc) 
+    {
+        System.out.print("Enter Store ID: ");
+        String storeId = sc.nextLine();
+        if (storeData.containsKey(storeId)) 
+        {
+            HashMap<String, Integer> products = storeData.get(storeId);
+            System.out.println("Products in " + storeId + ":");
+            for (Map.Entry<String, Integer> entry : products.entrySet()) {
+                System.out.println(entry.getKey() + " : " + entry.getValue());
+            }
+        }
+        else 
+        {
+            System.out.println("Store not found!");
+        }
+    }
+    private static void highestPricedProduct(Scanner sc) 
+    {
+        System.out.print("Enter Store ID: ");
+        String storeId = sc.nextLine();
+        if (storeData.containsKey(storeId)) {
+            HashMap<String, Integer> products = storeData.get(storeId);
+            String maxProduct = null;
+            int maxPrice = Integer.MIN_VALUE;
+            for (Map.Entry<String, Integer> entry : products.entrySet()) {
+                if (entry.getValue() > maxPrice) {
+                    maxPrice = entry.getValue();
+                    maxProduct = entry.getKey();
+                }
+            }
+            System.out.println("Highest priced product:");
+            System.out.println(maxProduct + " : " + maxPrice);
+        } 
+        else 
+        {
+            System.out.println("Store not found!");
+        }
+    }
+    private static void findStoresByProduct(Scanner sc) 
+    {
+        System.out.print("Enter Product Name: ");
+        String productName = sc.nextLine();
+        boolean found = false;
+        System.out.println("Stores containing '" + productName + "':");
+        for (Map.Entry<String, HashMap<String, Integer>> entry : storeData.entrySet()) 
+        {
+            if (entry.getValue().containsKey(productName)) 
+            {
+                System.out.println(entry.getKey());
+                found = true;
+            }
+        }
+        if (!found) 
+        {
+            System.out.println("Product not found in any store.");
+        }
+    }
+}

@@ -1,0 +1,126 @@
+import java.util.*;
+import java.time.LocalDate;
+public class Main 
+{
+    private static ArrayList<Employee> employees = new ArrayList<>();
+    public static void main(String[] args) 
+    {
+        Scanner sc = new Scanner(System.in);
+        int mainChoice;
+        do {
+            System.out.println("\n===== EMPLOYEE MANAGEMENT SYSTEM =====");
+            System.out.println("1. Enter Employee Data");
+            System.out.println("2. Sort Employee Records");
+            System.out.println("3. Exit");
+            System.out.print("Enter your choice: ");
+            mainChoice = sc.nextInt();
+            sc.nextLine();
+            switch (mainChoice) 
+            {
+                case 1:
+                    addEmployee(sc);
+                    break;
+                case 2:
+                    sortingMenu(sc);
+                    break;
+                case 3:
+                    System.out.println("Program terminated.");
+                    break;
+                default:
+                    System.out.println("Invalid choice!");
+            }
+        } 
+        while (mainChoice != 3);
+        sc.close();
+    }
+    private static void addEmployee(Scanner sc) 
+    {
+        System.out.print("Enter employee name: ");
+        String name = sc.nextLine();
+        System.out.print("Enter job: ");
+        String job = sc.nextLine();
+        System.out.print("Enter salary: ");
+        double salary = sc.nextDouble();
+        sc.nextLine();
+        System.out.print("Enter date of joining (yyyy-mm-dd): ");
+        LocalDate doj = LocalDate.parse(sc.nextLine());
+        employees.add(new Employee(name, job, salary, doj));
+        System.out.println("Employee record added successfully!");
+    }
+    private static void sortingMenu(Scanner sc) 
+    {
+        if (employees.isEmpty()) {
+            System.out.println("No employee records available to sort.");
+            return;
+        }
+        int choice;
+        do {
+            System.out.println("\n----- SORTING OPTIONS -----");
+            System.out.println("1. Salary Ascending");
+            System.out.println("2. Salary Descending");
+            System.out.println("3. Date of Joining Ascending");
+            System.out.println("4. Date of Joining Descending");
+            System.out.println("5. Exit Sorting Menu");
+            System.out.print("Enter your choice: ");
+            choice = sc.nextInt();
+            switch (choice) {
+                case 1:
+                    employees.sort(Comparator.comparingDouble(e -> e.salary));
+                    System.out.println("\nSorted by Salary Ascending:");
+                    displayEmployees();
+                    break;
+                case 2:
+                    employees.sort(
+                        Comparator.comparingDouble((Employee e) -> e.salary).reversed()
+                    );
+                    System.out.println("\nSorted by Salary Descending:");
+                    displayEmployees();
+                    break;
+                case 3:
+                    employees.sort(Comparator.comparing(e -> e.dateOfJoining));
+                    System.out.println("\nSorted by Date of Joining Ascending:");
+                    displayEmployees();
+                    break;
+                case 4:
+                    employees.sort(
+                        Comparator.comparing((Employee e) -> e.dateOfJoining).reversed()
+                    );
+                    System.out.println("\nSorted by Date of Joining Descending:");
+                    displayEmployees();
+                    break;
+                case 5:
+                    System.out.println("Returning to Main Menu...");
+                    break;
+                default:
+                    System.out.println("Invalid choice!");
+            }
+        } while (choice != 5);
+    }
+    private static void displayEmployees() 
+    {
+        System.out.println("Name - Job - Salary - Date Of Joining");
+        System.out.println("--------------------------------------");
+        for (Employee e : employees) {
+            System.out.println(e);
+        }
+    }
+}
+class Employee 
+{
+    String name;
+    String job;
+    double salary;
+    LocalDate dateOfJoining;
+    public Employee(String name, String job, double salary, LocalDate dateOfJoining) 
+    {
+        this.name = name;
+        this.job = job;
+        this.salary = salary;
+        this.dateOfJoining = dateOfJoining;
+    }
+    @Override
+    public String toString() 
+    {
+        return name + " - " + job + " - " + salary + " - " + dateOfJoining;
+    }
+}
