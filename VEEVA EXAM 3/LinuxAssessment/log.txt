@@ -1,0 +1,23 @@
+This is a normal log message
+22A81A0564_Resume.docx
+Question1A1.sh
+Question1A2.sh
+Question1B.sh
+Question1C.sh
+Question1D.sh
+Question2A.sh
+Question2B.sh
+Question3A.sh
+doc1.doc
+doc2.doc
+html1.html
+log.txt
+pdf1.pdf
+pdf2.pdf
+string.txt
+text1.txt
+text2.txt
+xsl1.xls
+xsl2.xls
+zip1.zip
+zip2.zip
